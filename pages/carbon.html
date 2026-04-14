@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carbon Footprint — Green Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo" style="text-decoration:none">
+      <div class="logo-leaf">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5 2 2 6 2 10c0 3.3 2.7 6 6 6 .5 0 1-.1 1.5-.2C10.8 14.6 16 10 16 4c-2.2-.8-4.7-2-7-2z" fill="currentColor"/></svg>
+      </div>
+      <span class="logo-text">Green<em>Tracker</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Home</a>
+      <a href="sdgs.html" class="nav-link">SDGs</a>
+      <a href="quiz.html" class="nav-link">Quiz</a>
+      <a href="carbon.html" class="nav-link active">Carbon</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+    </div>
+    <div class="nav-pill">SDG 13</div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-header fade-up">
+      <div class="section-eyebrow">Carbon Footprint Estimator</div>
+      <h1 class="section-title">Know your<br><em>impact.</em></h1>
+      <p class="section-desc">Enter your daily habits and get an estimate of your annual CO₂ emissions. Small changes in lifestyle can make a big difference.</p>
+    </div>
+
+    <div class="card fade-up-2">
+      <div style="font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">Enter your average monthly/yearly usage below</div>
+
+      <div class="cf-grid">
+        <div class="form-group">
+          <label class="form-label">Electricity (kWh/month)</label>
+          <input type="number" class="form-input" id="electricity" placeholder="e.g. 150" min="0" step="1">
+          <div class="form-hint">Check your monthly electricity bill</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Car travel (km/day)</label>
+          <input type="number" class="form-input" id="car" placeholder="e.g. 20" min="0" step="1">
+          <div class="form-hint">Average daily distance driven</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Flights (per year)</label>
+          <input type="number" class="form-input" id="flights" placeholder="e.g. 2" min="0" step="1">
+          <div class="form-hint">Count both short and long-haul flights</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">LPG cylinders (per month)</label>
+          <input type="number" class="form-input" id="lpg" placeholder="e.g. 1" min="0" step="0.5">
+          <div class="form-hint">Standard 14.2 kg domestic cylinder</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bike / scooter (km/day)</label>
+          <input type="number" class="form-input" id="bike" placeholder="e.g. 10" min="0" step="1">
+          <div class="form-hint">Petrol-powered two-wheelers</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Red meat meals (per week)</label>
+          <input type="number" class="form-input" id="meat" placeholder="e.g. 3" min="0" step="1">
+          <div class="form-hint">Beef, mutton, pork, etc.</div>
+        </div>
+      </div>
+
+      <button class="btn-primary btn-full" onclick="calculate()" style="margin-top:8px">Calculate My Carbon Footprint →</button>
+    </div>
+
+    <div id="result-section" style="display:none">
+      <div class="cf-result-card fade-up">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;opacity:.6;margin-bottom:8px">Estimated Annual Emissions</div>
+        <div class="cf-num" id="total-num">0</div>
+        <div class="cf-unit">kg CO₂ per year</div>
+        <div class="cf-rating" id="cf-rating"></div>
+
+        <div class="cf-breakdown" id="breakdown"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div style="font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:14px">How to reduce your footprint</div>
+        <ul class="suggestions" id="cf-tips"></ul>
+        <div style="margin-top:20px;display:flex;gap:10px">
+          <a href="dashboard.html" class="btn-primary">View Dashboard →</a>
+          <button class="btn-ghost" onclick="resetForm()">Recalculate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo">Green<em>Tracker</em></div>
+    <p>SDG Audit Course Project · AISSMS IOIT, Pune</p>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+  <script>
+  function calculate() {
+    const elec   = parseFloat(document.getElementById('electricity').value) || 0;
+    const car    = parseFloat(document.getElementById('car').value) || 0;
+    const fl     = parseFloat(document.getElementById('flights').value) || 0;
+    const lpg    = parseFloat(document.getElementById('lpg').value) || 0;
+    const bike   = parseFloat(document.getElementById('bike').value) || 0;
+    const meat   = parseFloat(document.getElementById('meat').value) || 0;
+
+    const elecKg  = Math.round(elec * 0.82 * 12);
+    const carKg   = Math.round(car * 0.21 * 365);
+    const flKg    = Math.round(fl * 255);
+    const lpgKg   = Math.round(lpg * 2.98 * 12);
+    const bikeKg  = Math.round(bike * 0.09 * 365);
+    const meatKg  = Math.round(meat * 3.6 * 52);
+    const total   = elecKg + carKg + flKg + lpgKg + bikeKg + meatKg;
+
+    document.getElementById('total-num').textContent = total.toLocaleString('en-IN');
+
+    let rating, ratingColor;
+    if (total < 1000) { rating = 'Below average — great work keeping emissions low!'; }
+    else if (total < 2500) { rating = 'Around India\'s average. There\'s room to improve.'; }
+    else if (total < 5000) { rating = 'Above average. Consider adjusting travel and energy habits.'; }
+    else { rating = 'High footprint. Significant lifestyle changes could help a lot.'; }
+    document.getElementById('cf-rating').textContent = rating;
+
+    const bkItems = [
+      {label:'Electricity', val:elecKg},
+      {label:'Car travel', val:carKg},
+      {label:'Flights', val:flKg},
+      {label:'LPG cooking', val:lpgKg},
+      {label:'Two-wheeler', val:bikeKg},
+      {label:'Diet (meat)', val:meatKg},
+    ];
+    const bk = document.getElementById('breakdown');
+    bk.innerHTML = bkItems.map(b => `<div class="cf-bk-item"><div class="bk-num">${b.val.toLocaleString('en-IN')}</div>${b.label}</div>`).join('');
+
+    const tips = [];
+    if (elecKg > 500) tips.push('Switch to LED lighting and use energy-efficient appliances — electricity is a major source of emissions.');
+    if (carKg > 700) tips.push('Consider carpooling, using public transport, or shifting to an EV for your daily commute.');
+    if (flKg > 500) tips.push('Avoid unnecessary flights; prefer train travel for domestic routes where possible.');
+    if (lpgKg > 300) tips.push('Consider an induction cooktop or solar cooking solutions to reduce LPG use.');
+    if (bikeKg > 300) tips.push('Servicing your two-wheeler regularly improves fuel efficiency significantly.');
+    if (meatKg > 500) tips.push('Reducing red meat consumption even by 2 meals per week can meaningfully cut your dietary emissions.');
+    if (tips.length === 0) tips.push('Your footprint is already low — keep up the great sustainable habits!', 'Share your tips with friends and family to multiply the impact.', 'Consider advocating for renewable energy in your community or workplace.');
+
+    const tipsEl = document.getElementById('cf-tips');
+    tipsEl.innerHTML = '';
+    tips.forEach(t => { const li = document.createElement('li'); li.textContent = t; tipsEl.appendChild(li); });
+
+    document.getElementById('result-section').style.display = 'block';
+    document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    GT.save('carbon', { total, breakdown: bkItems });
+  }
+
+  function resetForm() {
+    document.getElementById('result-section').style.display = 'none';
+    ['electricity','car','flights','lpg','bike','meat'].forEach(id => document.getElementById(id).value = '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  </script>
+</body>
+</html>

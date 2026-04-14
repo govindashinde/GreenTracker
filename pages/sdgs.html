@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDGs — Green Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo" style="text-decoration:none">
+      <div class="logo-leaf">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5 2 2 6 2 10c0 3.3 2.7 6 6 6 .5 0 1-.1 1.5-.2C10.8 14.6 16 10 16 4c-2.2-.8-4.7-2-7-2z" fill="currentColor"/></svg>
+      </div>
+      <span class="logo-text">Green<em>Tracker</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Home</a>
+      <a href="sdgs.html" class="nav-link active">SDGs</a>
+      <a href="quiz.html" class="nav-link">Quiz</a>
+      <a href="carbon.html" class="nav-link">Carbon</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+    </div>
+    <div class="nav-pill">SDG 13</div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-header fade-up">
+      <div class="section-eyebrow">United Nations · 2030 Agenda</div>
+      <h1 class="section-title">All 17 Sustainable<br><em>Development Goals</em></h1>
+      <p class="section-desc">Adopted in 2015, the SDGs provide a global blueprint to reduce poverty, protect the environment, and ensure prosperity for all. Our platform focuses on <strong>SDG 13 — Climate Action</strong>.</p>
+    </div>
+
+    <div class="sdg-grid fade-up-2" id="sdg-grid"></div>
+
+    <div class="card fade-up-3" style="margin-top:32px">
+      <div class="section-eyebrow">National &amp; International Status</div>
+      <h2 class="section-title" style="font-size:26px">SDG 13 — India's Progress</h2>
+      <table class="sdg-table" id="status-table"></table>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo">Green<em>Tracker</em></div>
+    <p>SDG Audit Course Project · AISSMS IOIT, Pune</p>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+  <script>
+  const sdgData = [
+    {num:"SDG 1", name:"No Poverty", color:"#D85A30", nat:"Poverty reduced but rural-urban gap persists.", intl:"Global poverty declining, but economic crises affect progress."},
+    {num:"SDG 2", name:"Zero Hunger", color:"#BA7517", nat:"Malnutrition still a significant challenge.", intl:"Hunger remains serious in many developing nations."},
+    {num:"SDG 3", name:"Good Health", color:"#2e7d32", nat:"Improved healthcare schemes and vaccination coverage.", intl:"Health systems improving, but global inequalities remain."},
+    {num:"SDG 4", name:"Quality Education", color:"#A32D2D", nat:"Higher enrolment; quality and digital gaps exist.", intl:"Primary education improved, but learning outcomes vary."},
+    {num:"SDG 5", name:"Gender Equality", color:"#D4537E", nat:"Better female literacy; inequality still present.", intl:"Progress seen, but discrimination continues worldwide."},
+    {num:"SDG 6", name:"Clean Water", color:"#185FA5", nat:"Major sanitation improvements; water issues remain.", intl:"Many regions still lack safe water access."},
+    {num:"SDG 7", name:"Clean Energy", color:"#854F0B", nat:"Rapid renewable energy growth across sectors.", intl:"Increasing global shift toward clean energy."},
+    {num:"SDG 8", name:"Decent Work", color:"#993556", nat:"Growing economy; youth unemployment a concern.", intl:"Uneven growth and job insecurity globally."},
+    {num:"SDG 9", name:"Innovation", color:"#0F6E56", nat:"Expanding digital and startup ecosystem.", intl:"Innovation rising but development is uneven."},
+    {num:"SDG 10", name:"Reduced Inequalities", color:"#534AB7", nat:"Income inequality persists within regions.", intl:"Wealth gaps increasing worldwide."},
+    {num:"SDG 11", name:"Sustainable Cities", color:"#E07B10", nat:"Smart city projects implemented across India.", intl:"Rapid urbanisation causing sustainability issues."},
+    {num:"SDG 12", name:"Responsible Consumption", color:"#9E6A14", nat:"Awareness rising; waste management challenges.", intl:"Unsustainable consumption patterns common."},
+    {num:"SDG 13", name:"Climate Action", color:"#1b5e20", nat:"Commitments toward emission reduction under Paris Agreement.", intl:"Climate change impacts increasing globally.", focus:true},
+    {num:"SDG 14", name:"Life Below Water", color:"#0d47a1", nat:"Coastal protection initiatives ongoing.", intl:"Marine pollution and overfishing remain major issues."},
+    {num:"SDG 15", name:"Life on Land", color:"#27500A", nat:"Forest conservation efforts strengthened.", intl:"Biodiversity loss continues globally."},
+    {num:"SDG 16", name:"Peace & Justice", color:"#1565C0", nat:"Stable governance; scope for institutional reforms.", intl:"Conflicts and instability affect several regions."},
+    {num:"SDG 17", name:"Partnerships", color:"#4527A0", nat:"Active global participation and cooperation.", intl:"International collaboration improving but funding gaps exist."},
+  ];
+
+  const grid = document.getElementById('sdg-grid');
+  sdgData.forEach(s => {
+    const c = document.createElement('div');
+    c.className = 'sdg-card' + (s.focus ? ' highlight' : '');
+    c.style.borderTopColor = s.color;
+    c.style.borderTopWidth = s.focus ? '4px' : '3px';
+    c.style.borderTopStyle = 'solid';
+    c.innerHTML = `<div class="sdg-num" style="color:${s.color}">${s.num}</div><div class="sdg-name">${s.name}</div>${s.focus ? '<div style="font-size:10px;margin-top:6px;color:#2e7d32;font-weight:500">★ Our Focus</div>' : ''}`;
+    grid.appendChild(c);
+  });
+
+  const table = document.getElementById('status-table');
+  table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
+  const hdr = `<thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:10px 12px;color:var(--text-light);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.07em">SDG</th><th style="text-align:left;padding:10px 12px;color:var(--text-light);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.07em">India Status</th><th style="text-align:left;padding:10px 12px;color:var(--text-light);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.07em">International Status</th></tr></thead>`;
+  let rows = '<tbody>';
+  sdgData.forEach((s,i) => {
+    rows += `<tr style="border-bottom:1px solid var(--border);background:${s.focus?'var(--green-50)':''}">
+      <td style="padding:10px 12px;font-weight:500;color:${s.color};white-space:nowrap">${s.num}</td>
+      <td style="padding:10px 12px;color:var(--text-muted)">${s.nat}</td>
+      <td style="padding:10px 12px;color:var(--text-muted)">${s.intl}</td>
+    </tr>`;
+  });
+  rows += '</tbody>';
+  table.innerHTML = hdr + rows;
+  </script>
+
+  <style>
+  .sdg-table { width:100%;border-collapse:collapse; }
+  </style>
+</body>
+</html>
